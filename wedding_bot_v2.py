@@ -72,6 +72,11 @@ try:
 
     logger.info("✅ Все настройки загружены успешно")
 
+    # Детальное логирование всех переменных для дебага
+    logger.info(f"🔍 AIRTABLE_TABLE_NAME = '{AIRTABLE_TABLE_NAME}' (type: {type(AIRTABLE_TABLE_NAME)})")
+    logger.info(f"🔍 AIRTABLE_BASE_ID = '{AIRTABLE_BASE_ID}' (type: {type(AIRTABLE_BASE_ID)})")
+    logger.info(f"🔍 BOT_TOKEN length = {len(BOT_TOKEN) if BOT_TOKEN else 0}")
+
     # Проверяем что все критичные переменные установлены
     if not BOT_TOKEN:
         logger.error("❌ WEDDING_BOT_TOKEN не установлен!")
@@ -79,6 +84,9 @@ try:
     if not AIRTABLE_TABLE_NAME:
         logger.error("❌ AIRTABLE_TABLE_NAME не установлен!")
         logger.error(f"Доступные переменные окружения: {list(os.environ.keys())}")
+        exit(1)
+    if not AIRTABLE_BASE_ID:
+        logger.error("❌ AIRTABLE_BASE_ID не установлен!")
         exit(1)
 
 except Exception as e:
