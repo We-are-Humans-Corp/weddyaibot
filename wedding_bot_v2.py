@@ -1,8 +1,9 @@
 import asyncio
 import logging
+import os
 from datetime import datetime
 from pathlib import Path
-from decouple import Config, RepositoryEnv
+from decouple import Config, RepositoryEnv, AutoConfig
 from aiogram import Bot, Dispatcher, F, Router
 from aiogram.filters import Command, StateFilter
 from aiogram.fsm.context import FSMContext
@@ -37,24 +38,37 @@ try:
     if env_path.exists():
         config = Config(RepositoryEnv(str(env_path)))
         logger.info("✅ Настройки загружены из .env.wedding")
+
+        BOT_TOKEN = config('WEDDING_BOT_TOKEN')
+        CLAUDE_KEY = config('CLAUDE_API_KEY')
+        AIRTABLE_TOKEN = config('AIRTABLE_TOKEN')
+        AIRTABLE_BASE_ID = config('AIRTABLE_BASE_ID')
+        AIRTABLE_TABLE_NAME = config('AIRTABLE_TABLE_NAME')
+        AIRTABLE_RESTAURANTS_TABLE = config('AIRTABLE_RESTAURANTS_TABLE')
+        AIRTABLE_YOGA_TABLE = config('AIRTABLE_YOGA_TABLE')
+        AIRTABLE_HOTELS_TABLE = config('AIRTABLE_HOTELS_TABLE')
+        AIRTABLE_BREAKFAST_TABLE = config('AIRTABLE_BREAKFAST_TABLE')
+        AIRTABLE_SPA_TABLE = config('AIRTABLE_SPA_TABLE')
+        AIRTABLE_SHOPPING_TABLE = config('AIRTABLE_SHOPPING_TABLE')
+        AIRTABLE_ART_TABLE = config('AIRTABLE_ART_TABLE')
+        PERPLEXITY_KEY = config('PERPLEXITY_API_KEY')
     else:
-        # Используем переменные окружения (Railway, Render, etc.)
-        config = Config()
+        # Используем переменные окружения напрямую (Railway, Render, etc.)
         logger.info("✅ Настройки загружены из переменных окружения")
 
-    BOT_TOKEN = config('WEDDING_BOT_TOKEN')
-    CLAUDE_KEY = config('CLAUDE_API_KEY')
-    AIRTABLE_TOKEN = config('AIRTABLE_TOKEN')
-    AIRTABLE_BASE_ID = config('AIRTABLE_BASE_ID')
-    AIRTABLE_TABLE_NAME = config('AIRTABLE_TABLE_NAME')
-    AIRTABLE_RESTAURANTS_TABLE = config('AIRTABLE_RESTAURANTS_TABLE')
-    AIRTABLE_YOGA_TABLE = config('AIRTABLE_YOGA_TABLE')
-    AIRTABLE_HOTELS_TABLE = config('AIRTABLE_HOTELS_TABLE')
-    AIRTABLE_BREAKFAST_TABLE = config('AIRTABLE_BREAKFAST_TABLE')
-    AIRTABLE_SPA_TABLE = config('AIRTABLE_SPA_TABLE')
-    AIRTABLE_SHOPPING_TABLE = config('AIRTABLE_SHOPPING_TABLE')
-    AIRTABLE_ART_TABLE = config('AIRTABLE_ART_TABLE')
-    PERPLEXITY_KEY = config('PERPLEXITY_API_KEY')
+        BOT_TOKEN = os.getenv('WEDDING_BOT_TOKEN')
+        CLAUDE_KEY = os.getenv('CLAUDE_API_KEY')
+        AIRTABLE_TOKEN = os.getenv('AIRTABLE_TOKEN')
+        AIRTABLE_BASE_ID = os.getenv('AIRTABLE_BASE_ID')
+        AIRTABLE_TABLE_NAME = os.getenv('AIRTABLE_TABLE_NAME')
+        AIRTABLE_RESTAURANTS_TABLE = os.getenv('AIRTABLE_RESTAURANTS_TABLE')
+        AIRTABLE_YOGA_TABLE = os.getenv('AIRTABLE_YOGA_TABLE')
+        AIRTABLE_HOTELS_TABLE = os.getenv('AIRTABLE_HOTELS_TABLE')
+        AIRTABLE_BREAKFAST_TABLE = os.getenv('AIRTABLE_BREAKFAST_TABLE')
+        AIRTABLE_SPA_TABLE = os.getenv('AIRTABLE_SPA_TABLE')
+        AIRTABLE_SHOPPING_TABLE = os.getenv('AIRTABLE_SHOPPING_TABLE')
+        AIRTABLE_ART_TABLE = os.getenv('AIRTABLE_ART_TABLE')
+        PERPLEXITY_KEY = os.getenv('PERPLEXITY_API_KEY')
 
     logger.info("✅ Все настройки загружены успешно")
 except Exception as e:
