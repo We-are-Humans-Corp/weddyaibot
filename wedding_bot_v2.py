@@ -30,26 +30,33 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# ── Настройки из .env.wedding ────────────────────────────────────────────────
+# ── Настройки из .env.wedding или переменных окружения ───────────────────────
 try:
+    # Пробуем загрузить из .env.wedding (локально)
     env_path = Path(__file__).parent / '.env.wedding'
-    config = Config(RepositoryEnv(str(env_path)))
+    if env_path.exists():
+        config = Config(RepositoryEnv(str(env_path)))
+        logger.info("✅ Настройки загружены из .env.wedding")
+    else:
+        # Используем переменные окружения (Railway, Render, etc.)
+        config = Config()
+        logger.info("✅ Настройки загружены из переменных окружения")
 
     BOT_TOKEN = config('WEDDING_BOT_TOKEN')
     CLAUDE_KEY = config('CLAUDE_API_KEY')
     AIRTABLE_TOKEN = config('AIRTABLE_TOKEN')
-    AIRTABLE_BASE_ID = config('AIRTABLE_BASE_ID')  # app...
-    AIRTABLE_TABLE_NAME = config('AIRTABLE_TABLE_NAME')  # Wedding Guests
-    AIRTABLE_RESTAURANTS_TABLE = config('AIRTABLE_RESTAURANTS_TABLE')  # Restaurants
-    AIRTABLE_YOGA_TABLE = config('AIRTABLE_YOGA_TABLE')  # yoga_fitness_studios
-    AIRTABLE_HOTELS_TABLE = config('AIRTABLE_HOTELS_TABLE')  # Hotels
-    AIRTABLE_BREAKFAST_TABLE = config('AIRTABLE_BREAKFAST_TABLE')  # Breakfast/lunch
-    AIRTABLE_SPA_TABLE = config('AIRTABLE_SPA_TABLE')  # Spa
-    AIRTABLE_SHOPPING_TABLE = config('AIRTABLE_SHOPPING_TABLE')  # Shopping
-    AIRTABLE_ART_TABLE = config('AIRTABLE_ART_TABLE')  # Art
+    AIRTABLE_BASE_ID = config('AIRTABLE_BASE_ID')
+    AIRTABLE_TABLE_NAME = config('AIRTABLE_TABLE_NAME')
+    AIRTABLE_RESTAURANTS_TABLE = config('AIRTABLE_RESTAURANTS_TABLE')
+    AIRTABLE_YOGA_TABLE = config('AIRTABLE_YOGA_TABLE')
+    AIRTABLE_HOTELS_TABLE = config('AIRTABLE_HOTELS_TABLE')
+    AIRTABLE_BREAKFAST_TABLE = config('AIRTABLE_BREAKFAST_TABLE')
+    AIRTABLE_SPA_TABLE = config('AIRTABLE_SPA_TABLE')
+    AIRTABLE_SHOPPING_TABLE = config('AIRTABLE_SHOPPING_TABLE')
+    AIRTABLE_ART_TABLE = config('AIRTABLE_ART_TABLE')
     PERPLEXITY_KEY = config('PERPLEXITY_API_KEY')
 
-    logger.info("✅ Настройки загружены успешно из .env.wedding")
+    logger.info("✅ Все настройки загружены успешно")
 except Exception as e:
     logger.error(f"❌ Ошибка загрузки настроек: {e}")
     exit(1)
