@@ -71,6 +71,16 @@ try:
         PERPLEXITY_KEY = os.getenv('PERPLEXITY_API_KEY')
 
     logger.info("✅ Все настройки загружены успешно")
+
+    # Проверяем что все критичные переменные установлены
+    if not BOT_TOKEN:
+        logger.error("❌ WEDDING_BOT_TOKEN не установлен!")
+        exit(1)
+    if not AIRTABLE_TABLE_NAME:
+        logger.error("❌ AIRTABLE_TABLE_NAME не установлен!")
+        logger.error(f"Доступные переменные окружения: {list(os.environ.keys())}")
+        exit(1)
+
 except Exception as e:
     logger.error(f"❌ Ошибка загрузки настроек: {e}")
     exit(1)
