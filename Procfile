@@ -1,0 +1,1 @@
+worker: python wedding_bot_v2.py
